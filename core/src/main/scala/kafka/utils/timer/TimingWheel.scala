@@ -144,7 +144,7 @@ private[timer] class TimingWheel(tickMs: Long, wheelSize: Int, startMs: Long, ta
         // and the previous buckets gets reused; further calls to set the expiration within the same wheel cycle
         // will pass in the same value and hence return false, thus the bucket with the same expiration will not
         // be enqueued multiple times.
-        queue.offer(bucket)
+        queue.offer(bucket) // 添加进入延迟队列？
       }
       true
     } else {

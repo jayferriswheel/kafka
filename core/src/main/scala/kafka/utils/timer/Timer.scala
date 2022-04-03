@@ -25,6 +25,7 @@ import org.apache.kafka.common.utils.{KafkaThread, Time}
 
 trait Timer {
   /**
+    * 添加到延迟
     * Add a new task to this executor. It will be executed after the task's delay
     * (beginning from the time of submission)
     * @param timerTask the task to add
@@ -51,6 +52,10 @@ trait Timer {
   def shutdown(): Unit
 }
 
+
+/**
+  * 时间轮需要一个推动力
+  */
 @threadsafe
 class SystemTimer(executorName: String,
                   tickMs: Long = 1,
@@ -100,6 +105,7 @@ class SystemTimer(executorName: String,
   /*
    * Advances the clock if there is an expired bucket. If there isn't any expired bucket when called,
    * waits up to timeoutMs before giving up.
+   * 推动时间
    */
   def advanceClock(timeoutMs: Long): Boolean = {
     var bucket = delayQueue.poll(timeoutMs, TimeUnit.MILLISECONDS)
@@ -109,7 +115,7 @@ class SystemTimer(executorName: String,
         while (bucket != null) {
           timingWheel.advanceClock(bucket.getExpiration())
           bucket.flush(reinsert)
-          bucket = delayQueue.poll()
+          bucket = delayQueue.poll() // 执行
         }
       } finally {
         writeLock.unlock()
