@@ -23,6 +23,7 @@ import org.apache.kafka.common.TopicPartition;
 /**
  * A callback interface that the user can implement to trigger custom actions when the set of partitions assigned to the
  * consumer changes.
+ * consumer再均衡，其实这里可以捋一下消费积压的各种原因
  * <p>
  * This is applicable when the consumer is having Kafka auto-manage group membership. If the consumer directly assigns partitions,
  * those partitions will never be reassigned and this callback is not applicable.

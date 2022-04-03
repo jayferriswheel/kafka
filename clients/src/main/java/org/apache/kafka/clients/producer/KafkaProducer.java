@@ -592,6 +592,7 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
     /**
      * Should be called before the start of each new transaction. Note that prior to the first invocation
      * of this method, you must invoke {@link #initTransactions()} exactly one time.
+     * kafka 事务？
      *
      * @throws IllegalStateException if no transactional.id has been configured or if {@link #initTransactions()}
      *         has not yet been invoked
@@ -845,6 +846,7 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
                         " to class " + producerConfig.getClass(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG).getName() +
                         " specified in value.serializer", cce);
             }
+            // 获取分区
             int partition = partition(record, serializedKey, serializedValue, cluster);
             tp = new TopicPartition(record.topic(), partition);
 
@@ -862,6 +864,7 @@ public class KafkaProducer<K, V> implements Producer<K, V> {
             if (transactionManager != null && transactionManager.isTransactional())
                 transactionManager.maybeAddPartitionToTransaction(tp);
 
+            // 这里其实并未实际发送
             RecordAccumulator.RecordAppendResult result = accumulator.append(tp, timestamp, serializedKey,
                     serializedValue, headers, interceptCallback, remainingWaitMs);
             if (result.batchIsFull || result.newBatchCreated) {

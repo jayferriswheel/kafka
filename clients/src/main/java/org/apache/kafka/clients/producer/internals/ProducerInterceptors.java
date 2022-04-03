@@ -31,6 +31,7 @@ import java.util.List;
 /**
  * A container that holds the list {@link org.apache.kafka.clients.producer.ProducerInterceptor}
  * and wraps calls to the chain of custom interceptors.
+ * 职责链：常规的一种设计，拦截器
  */
 public class ProducerInterceptors<K, V> implements Closeable {
     private static final Logger log = LoggerFactory.getLogger(ProducerInterceptors.class);

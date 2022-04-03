@@ -68,6 +68,7 @@ import java.util.Map;
 import static org.apache.kafka.common.record.RecordBatch.NO_TIMESTAMP;
 
 /**
+ * 后台发送线程
  * The background thread that handles the sending of produce requests to the Kafka cluster. This thread makes metadata
  * requests to renew its view of the cluster and then sends produce requests to the appropriate nodes.
  */
@@ -704,7 +705,7 @@ public class Sender implements Runnable {
         String nodeId = Integer.toString(destination);
         ClientRequest clientRequest = client.newClientRequest(nodeId, requestBuilder, now, acks != 0,
                 requestTimeoutMs, callback);
-        client.send(clientRequest, now);
+        client.send(clientRequest, now);// 发送
         log.trace("Sent produce request to {}: {}", nodeId, requestBuilder);
     }
 
